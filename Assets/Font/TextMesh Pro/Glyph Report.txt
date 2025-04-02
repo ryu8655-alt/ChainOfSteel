@@ -1,0 +1,12 @@
+Font: SoukouMincho  Style: Regular
+Point Size: 41   SP/PD Ratio: 12.2%
+
+Characters included: 6741/6741
+Missing characters: 0
+Excluded characters: 0
+
+Characters missing from font file:
+----------------------------------------
+
+Characters excluded from packing:
+----------------------------------------
