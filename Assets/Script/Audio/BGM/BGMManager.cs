@@ -1,56 +1,48 @@
-using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
-/// <summary>
-/// BGMの再生と管理を行うクラス
-/// </summary>
-
-//メモ
-//既存のBGMManagerと干渉するので一時的にファイル名をbgmManagerにしてる
-//後でBGMManagerに戻す
 public class BGMManager : MonoBehaviour
 {
-    [SerializeField, Header("BGMのAudioSource")]
-    private AudioSource _bgmAudioSource;
-
     [SerializeField,Header("再生するBGM")]
-    private AudioClip _bgmAudioClip;
+    private AudioClip _bgmClip;
 
-    [SerializeField, Header("BGMマスター音量"),Range(0f,1.0f)]
-    private float _bgmMasterVolume = 1.0f;
+    [Header("音量(Optionで調整予定)")]
+    [Range(0, 1)]
+    [SerializeField] private float _volume = 1.0f;
 
-    [SerializeField,Header("BGM音量"), Range(0f, 1.0f)]
-    private float _bgmVolume = 1.0f;
+    private AudioSource _audioSource;
 
+    private void Awake()
+    {
+        //AudioSource設定
+        //AudioSourceコンポーネントを取得
+        _audioSource = gameObject.AddComponent<AudioSource>();
+        //AudioClipを設定
+        _audioSource.clip = _bgmClip;
+        //ループ再生を設定
+        _audioSource.loop = true;
+        _audioSource.playOnAwake = false;
+
+        //音量を設定
+        _audioSource.volume = _volume;
+
+    }
     // Start is called before the first frame update
     void Start()
     {
 
-        //AudioSourceの設定・再生するBGMの設定がされているのか確認
-        if(_bgmAudioSource == null || _bgmAudioClip == null)
+        if(_audioSource.clip != null)
         {
-            Debug.LogWarning("AudioSourceまたはAudioClipが設定されていません。");
-            return;
+            _audioSource.Play();
         }
-
-        //BGMの再生処理
-        PlayBGM();
-        
     }
 
-    private void PlayBGM()
+    //オプション設定から呼び出すメソッド
+    public void SetVolume( float volume)
     {
-        if (_bgmAudioSource.clip == _bgmAudioClip && _bgmAudioSource.isPlaying)
-        {
-            //同じBGMが再生中の場合は何もしない
-            return;
-        }
-
-        _bgmAudioSource.clip = _bgmAudioClip;
-        _bgmAudioSource.volume = _bgmMasterVolume * _bgmVolume;
-
-        _bgmAudioSource.Play();
-
+        _audioSource.volume = volume;
     }
+
 
 }
