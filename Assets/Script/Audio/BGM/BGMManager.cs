@@ -1,48 +1,48 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BGMManager : MonoBehaviour
 {
+    [SerializeField,Header("BGMのAudioSource")]
+    private AudioSource _bgmAudioSource;
+
     [SerializeField,Header("再生するBGM")]
-    private AudioClip _bgmClip;
+    private AudioClip _bgmAudioClip;
 
-    [Header("音量(Optionで調整予定)")]
-    [Range(0, 1)]
-    [SerializeField] private float _volume = 1.0f;
+    [SerializeField,Header("BGMの音量"),Range(0.0f,1.0f)]
+    private float _bgmVolume = 1.0f;
 
-    private AudioSource _audioSource;
+    [SerializeField,Header("BGMのマスター音量"), Range(0.0f, 1.0f)]   
+    private float _masterVolume = 1.0f;
 
-    private void Awake()
-    {
-        //AudioSource設定
-        //AudioSourceコンポーネントを取得
-        _audioSource = gameObject.AddComponent<AudioSource>();
-        //AudioClipを設定
-        _audioSource.clip = _bgmClip;
-        //ループ再生を設定
-        _audioSource.loop = true;
-        _audioSource.playOnAwake = false;
 
-        //音量を設定
-        _audioSource.volume = _volume;
 
-    }
     // Start is called before the first frame update
     void Start()
     {
-
-        if(_audioSource.clip != null)
+        if(_bgmAudioSource==null || _bgmAudioClip == null)
         {
-            _audioSource.Play();
+            Debug.LogWarning("AudioSourceまたはBGMが設定されていません。");
+            return;
         }
+
+        PlayBGM();
+
+
     }
 
-    //オプション設定から呼び出すメソッド
-    public void SetVolume( float volume)
+
+    private void PlayBGM()
     {
-        _audioSource.volume = volume;
-    }
+        if(_bgmAudioSource.clip == _bgmAudioClip && _bgmAudioSource.isPlaying)
+        {
+            // すでにBGMが再生中の場合は何もしない
+            return;
+        }
 
+        _bgmAudioSource.clip = _bgmAudioClip;
+        _bgmAudioSource.volume = _bgmVolume * _masterVolume;
+        _bgmAudioSource.Play();
+
+    }
 
 }
