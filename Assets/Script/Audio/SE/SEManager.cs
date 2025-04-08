@@ -11,11 +11,13 @@ public class SEManager : MonoBehaviour
     [SerializeField,Header("SEのAudioSource")]
     private AudioSource _seAudioSource;
 
+    [SerializeField,Header("SEマスター音量"),Range(0.0f,1.0f)]
+    private float _seMasterVolume = 1.0f;
+
     [SerializeField, Header("SEデータList")]
     List<SESoundDatas> _seSoundDatas;
 
-    [SerializeField,Header("SEマスター音量")]
-    private float _seMasterVolume = 1.0f;
+   
 
     public void PlaySE(string seName)
     {
