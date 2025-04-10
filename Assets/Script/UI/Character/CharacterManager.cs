@@ -6,6 +6,12 @@ public class CharacterManager : MonoBehaviour
     public CharacterSlideIn _characterSlideIn;
     public FaceModeHandler _faceModeHandler;
 
+    [SerializeField,Header("メッセージウィンドウUI")]
+    private GameObject _messageWindowUI;
+
+    [SerializeField, Header("MessageWindowHandler")]
+    private MessageWindowHandler _messageWindowHandler;
+
 
 
 
@@ -25,10 +31,22 @@ public class CharacterManager : MonoBehaviour
 
     private void OnSlideInFinished()
     {
-       
-        if (_faceModeHandler != null)
-        {
-            _faceModeHandler.StartSwapping();
-        }
+
+        _messageWindowUI.SetActive(true);
+
+       _messageWindowHandler.ShowIntialLine();
+        _messageWindowHandler.StartRandomLines(10f);
+
+        //if (_faceModeHandler != null)
+        //{
+        //    _faceModeHandler.StartSwapping();
+        //}
+
+        //if(_messageWindowUI != null)
+        //{
+        //    _messageWindowUI.SetActive(true);
+        //    Debug.Log("メッセージウィンドウを表示しました");
+        //}
+
     }
 }
