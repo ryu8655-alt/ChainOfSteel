@@ -29,13 +29,16 @@ public class MessageWindowHandler : MonoBehaviour
     private GameObject _messageWindow;
 
 
+    [SerializeField,Header("ボイスのマスター音量")]
+    private float _masterVolume = 3.0f;
+
     [SerializeField,Header("シーン遷移時にしゃべるセリフデータ")]
     private　DialogueData[] _dialogueData;
 
     [SerializeField, Header("シーン放置時にしゃべるセリフデータ")]
     private List<DialogueData> _idleDialogueData;
 
-    private Coroutine _idleeLineCoroutine;
+    private Coroutine _idleLineCoroutine;
 
 
     public void ShowIntialLine()
@@ -46,8 +49,8 @@ public class MessageWindowHandler : MonoBehaviour
 
     public void StartRandomLines(float interval = 10f)
     {
-        if (_idleeLineCoroutine != null) StopCoroutine(_idleeLineCoroutine);
-        _idleeLineCoroutine = StartCoroutine(IdleLineRoutine(interval));
+        if (_idleLineCoroutine != null) StopCoroutine(_idleLineCoroutine);
+        _idleLineCoroutine = StartCoroutine(IdleLineRoutine(interval));
 
 
     }
@@ -70,6 +73,7 @@ public class MessageWindowHandler : MonoBehaviour
         if(entry.voiceClip != null)
         {
             _voicePlayer.clip = entry.voiceClip;
+            _voicePlayer.volume = _masterVolume;
             _voicePlayer.Play();
         }
 
